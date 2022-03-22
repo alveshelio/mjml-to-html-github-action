@@ -1,23 +1,24 @@
 {
-  "name": "typescript-container-action-template",
+  "name": "mjml-to-html-github-action",
   "version": "1.0.0",
   "private": true,
   "description": "Template to create a GitHub container action in Node.js with TypeScript",
-  "author": "kevinpollet <pollet.kevin@gmail.com>",
+  "author": "Helio Alves <helios25@gmail.com>",
   "license": "MIT",
-  "homepage": "https://github.com/kevinpollet/typescript-container-action-template#readme",
-  "bugs": "https://github.com/kevinpollet/typescript-container-action-template/issues",
-  "repository": "github:kevinpollet/typescript-container-action-template",
+  "homepage": "https://github.com/alveshelio/mjml-to-html-github-action#readme",
+  "bugs": "https://github.com/alveshelio/mjml-to-html-github-action/issues",
+  "repository": "https://github.com/alveshelio/mjml-to-html-github-action",
   "keywords": [
-    "nodejs",
-    "typescript",
+    "MJML",
+    "HTML",
     "github-action"
   ],
   "scripts": {
     "build": "rm -rf lib && tsc --project tsconfig.build.json",
     "dev": "ts-node src/index.ts",
-    "format": "prettier --write '{src,test,.github}/**/*' '*.{json,md,yml}'",
-    "lint": "eslint '{src,test}/**/*'"
+    "format": "prettier --write '{src,.github}/**/*' '*.{json,md,yml,ts}'",
+    "lint": "eslint '{src}/**/*'",
+    "mjml:lint": "mjml -v ./**/*.mjml"
   },
   "dependencies": {
     "@actions/core": "1.6.0",
