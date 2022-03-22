@@ -1,6 +1,8 @@
 name: Convert MJML to HTML templates
 description: Takes an input where your MJML templates are located and will convert them into HTML to the specified ouput directory
 author: Helio Alves <helios25@gmail.com>
+branding:
+  icon: repeat
 inputs:
   input:
     required: true
