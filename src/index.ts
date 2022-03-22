@@ -1,12 +1,7 @@
-/**
- * Copyright © 2019 kevinpollet <pollet.kevin@gmail.com>`
- *
- * Use of this source code is governed by an MIT-style license that can be
- * found in the LICENSE.md file.
- */
-
 import { getInput } from "@actions/core";
 
-const name = getInput("name", { required: true });
+const input = getInput("input", { required: true });
+const output = getInput("output", { required: true });
 
-console.log(`Hello, ${name}!`);
+console.log(`Input, ${input}!`);
+console.log(`Output, ${output}!`);
