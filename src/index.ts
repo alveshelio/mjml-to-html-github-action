@@ -32,6 +32,7 @@ async function findEmailTemplateFiles(directory: string) {
     return []
   }
 }
+console.warn('appRoot', appRoot)
 
 async function main() {
   const inputDir = `${appRoot}/${input}`
