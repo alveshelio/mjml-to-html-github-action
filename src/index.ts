@@ -7,9 +7,6 @@ import { getInput } from '@actions/core'
 const input = getInput('input', { required: true })
 const output = getInput('output', { required: true })
 
-// const input = 'templates'
-// const output = 'dist'
-
 async function getHTLMFromMJML(filePath: string) {
   const fileContent = await fs.readFile(filePath, 'utf-8')
   return mjml2html(fileContent.toString()).html
