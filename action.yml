@@ -1,13 +1,13 @@
-name: TypeScript Container Action Template
-description: Template to create a GitHub container action in Node.js with TypeScript
-author: kevinpollet <pollet.kevin@gmail.com>
-branding:
-  icon: book-open
-  color: blue
+name: Convert MJML to HTML templates
+description: Takes an input where your MJML templates are located and will convert them into HTML to the specified ouput directory
+author: Helio Alves <helios25@gmail.com>
 inputs:
-  name:
+  input:
     required: true
-    description: Name to greet
+    description: Directory where your MJML templates are located
+  output:
+    required: true
+    description: Directory where the HTML templates will be converted to
 runs:
   using: docker
   image: Dockerfile

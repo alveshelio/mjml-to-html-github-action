@@ -7,9 +7,11 @@ jobs:
     runs-on: ubuntu-18.04
     strategy:
       matrix:
-        name: [World, Octocat]
+        input: [templates]
+        output: [dist]
 
     steps:
-      - uses: kevinpollet/typescript-container-action-template@master
+      - uses: alveshelio/mjml-to-html-github-action@latest
         with:
-          name: ${{matrix.name}}
+          input: ${{matrix.input}}
+          output: ${{matrix.output}}
