@@ -16,6 +16,8 @@ You simply provide the root source of your MJML templates to `input` and the out
 
 ### Full example
 
+Create a file `mjml-to-html.yml` in `.github/workflows`
+
 ```yaml
 name: Convert MLML templates to HTML templates
 
