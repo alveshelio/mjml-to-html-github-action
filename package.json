@@ -15,10 +15,9 @@
   ],
   "scripts": {
     "build": "rm -rf lib && tsc --project tsconfig.build.json",
-    "publish": "ts-node src/index.ts",
+    "dev": "ts-node src/index.ts",
     "format": "prettier --write '{src,test,.github}/**/*' '*.{json,md,yml}'",
-    "lint": "eslint '{src,test}/**/*'",
-    "test": "jest --preset ts-jest"
+    "lint": "eslint '{src,test}/**/*'"
   },
   "dependencies": {
     "@actions/core": "1.6.0",
@@ -35,10 +34,8 @@
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.0.0",
     "husky": "7.0.4",
-    "jest": "27.5.1",
     "lint-staged": "12.3.7",
     "prettier": "2.6.0",
-    "ts-jest": "27.1.3",
     "ts-node": "10.7.0",
     "typescript": "4.6.2"
   }
