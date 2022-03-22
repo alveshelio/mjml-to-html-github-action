@@ -3,6 +3,7 @@ import path from 'path'
 import fs from 'fs/promises'
 import appRoot from 'app-root-path'
 import { getInput } from '@actions/core'
+import { Dirent } from 'fs'
 
 const input = getInput('input', { required: true })
 const output = getInput('output', { required: true })
@@ -13,25 +14,36 @@ async function getHTLMFromMJML(filePath: string) {
 }
 
 async function findEmailTemplateFiles(directory: string) {
-  const items = await fs.readdir(directory, { withFileTypes: true })
-  const fileNames = items
-    .filter((file) => !file.isDirectory())
-    .map((file) => `${directory}/${file.name}`)
-  const folders = items.filter((item) => item.isDirectory())
-  for (const folder of folders) {
-    fileNames.push(...(await findEmailTemplateFiles(`${directory}/${folder.name}`)))
-  }
+  let items: Dirent[] = []
+  try {
+    console.warn('directory', directory)
+    items = await fs.readdir(directory, { withFileTypes: true })
+    const fileNames = items
+      .filter((file) => !file.isDirectory())
+      .map((file) => `${directory}/${file.name}`)
+    const folders = items.filter((item) => item.isDirectory())
+    for (const folder of folders) {
+      fileNames.push(...(await findEmailTemplateFiles(`${directory}/${folder.name}`)))
+    }
 
-  return fileNames
+    return fileNames
+  } catch (e) {
+    console.warn('could not find directory', input)
+    return []
+  }
 }
 
 async function main() {
-  const filePaths = await findEmailTemplateFiles(input)
+  const inputDir = `${appRoot}/${input}`
+  const outputDir = `${appRoot}/${output}`
+
+  const filePaths = await findEmailTemplateFiles(inputDir)
+
   const mjmlTemplatePaths = filePaths.filter(
     (emailTemplate) =>
       path.extname(emailTemplate).includes('mjml') && !emailTemplate.includes('partials')
   )
-  const outputDir = `${appRoot}/${output}`
+  console.warn('outputDir', outputDir)
   try {
     await fs.stat(outputDir)
     await fs.rm(outputDir, { recursive: true })
@@ -42,8 +54,10 @@ async function main() {
     const fileName = mjmlTemplatePathParts.pop()?.split('.')[0]
     const partialHtmlOutputPath = mjmlTemplatePathParts.join('/')
     const htmlOutputDirectoryPath = `${outputDir}/${partialHtmlOutputPath}`
+    console.warn('htmlOutputDirectoryPath', htmlOutputDirectoryPath)
     await fs.mkdir(htmlOutputDirectoryPath, { recursive: true })
     const htmlOutputFilePath = `${outputDir}/${partialHtmlOutputPath}/${fileName}.html`
+    console.warn('htmlOutputFilePath', htmlOutputFilePath)
     await fs.writeFile(htmlOutputFilePath, await getHTLMFromMJML(mjmlTemplatePath), 'utf-8')
   }
 }
