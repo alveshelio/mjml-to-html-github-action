@@ -17,8 +17,7 @@
     "build": "rm -rf lib && tsc --project tsconfig.build.json",
     "dev": "ts-node src/index.ts",
     "format": "prettier --write '{src,.github}/**/*' '*.{json,md,yml,ts}'",
-    "lint": "eslint 'src/**/*'",
-    "mjml:lint": "mjml -v ./**/*.mjml"
+    "lint": "eslint 'src/**/*'"
   },
   "dependencies": {
     "@actions/core": "1.6.0",

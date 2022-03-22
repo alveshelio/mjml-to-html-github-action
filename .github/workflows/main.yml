@@ -14,5 +14,4 @@ jobs:
 
       - run: npm ci
       - run: npm run lint
-      - run: npm run 'mjml:lint'
       - run: npm run build
