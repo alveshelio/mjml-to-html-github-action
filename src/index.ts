@@ -1,6 +1,6 @@
 import mjml2html from 'mjml'
 import path from 'path'
-import fs from 'fs/promises'
+import { promises as fs } from 'fs'
 import appRoot from 'app-root-path'
 import { getInput } from '@actions/core'
 
