@@ -32,11 +32,11 @@ async function findEmailTemplateFiles(directory: string) {
     return []
   }
 }
-console.warn('appRoot', appRoot)
+console.warn('appRoot', appRoot.path)
 
 async function main() {
-  const inputDir = `${appRoot}/${input}`
-  const outputDir = `${appRoot}/${output}`
+  const inputDir = `${appRoot.path}/${input}`
+  const outputDir = `${appRoot.path}/${output}`
 
   const filePaths = await findEmailTemplateFiles(inputDir)
 
