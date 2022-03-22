@@ -11,7 +11,7 @@ jobs:
         output: [dist]
 
     steps:
-      - uses: alveshelio/mjml-to-html-github-action@latest
+      - uses: alveshelio/mjml-to-html-github-action@main
         with:
           input: ${{matrix.input}}
           output: ${{matrix.output}}
