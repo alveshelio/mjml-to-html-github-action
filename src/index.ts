@@ -1,10 +1,8 @@
 import mjml2html from 'mjml'
 import path from 'path'
 import fs from 'fs/promises'
-import appRoot from 'app-root-path'
-import { getInput } from '@actions/core'
 import { Dirent } from 'fs'
-
+import { getInput } from '@actions/core'
 const input = getInput('input', { required: true })
 const output = getInput('output', { required: true })
 
@@ -16,7 +14,6 @@ async function getHTLMFromMJML(filePath: string) {
 async function findEmailTemplateFiles(directory: string) {
   let items: Dirent[] = []
   try {
-    console.warn('directory', directory)
     items = await fs.readdir(directory, { withFileTypes: true })
     const fileNames = items
       .filter((file) => !file.isDirectory())
@@ -32,33 +29,31 @@ async function findEmailTemplateFiles(directory: string) {
     return []
   }
 }
-console.warn('appRoot', appRoot.path)
 
 async function main() {
-  const inputDir = `${appRoot.path}/${input}`
-  const outputDir = `${appRoot.path}/${output}`
+  const inputDir = path.resolve(`./${input}`)
+  const outputDir = `./${output}`
 
   const filePaths = await findEmailTemplateFiles(inputDir)
 
   const mjmlTemplatePaths = filePaths.filter(
-    (emailTemplate) =>
-      path.extname(emailTemplate).includes('mjml') && !emailTemplate.includes('partials')
+    (filePath) => path.extname(filePath).includes('mjml') && !filePath.includes('partials')
   )
-  console.warn('outputDir', outputDir)
   try {
     await fs.stat(outputDir)
     await fs.rm(outputDir, { recursive: true })
   } catch (e) {}
 
   for (const mjmlTemplatePath of mjmlTemplatePaths) {
-    const [, ...mjmlTemplatePathParts] = mjmlTemplatePath.split('/')
-    const fileName = mjmlTemplatePathParts.pop()?.split('.')[0]
-    const partialHtmlOutputPath = mjmlTemplatePathParts.join('/')
-    const htmlOutputDirectoryPath = `${outputDir}/${partialHtmlOutputPath}`
-    console.warn('htmlOutputDirectoryPath', htmlOutputDirectoryPath)
-    await fs.mkdir(htmlOutputDirectoryPath, { recursive: true })
-    const htmlOutputFilePath = `${outputDir}/${partialHtmlOutputPath}/${fileName}.html`
-    console.warn('htmlOutputFilePath', htmlOutputFilePath)
+    const extension = path.extname(mjmlTemplatePath)
+    const fileName = path.basename(mjmlTemplatePath, extension)
+    const mjmlTemplateParts = mjmlTemplatePath.replace(inputDir, outputDir).split('/')
+    mjmlTemplateParts.pop()
+    const htmlOutputPath = mjmlTemplateParts.join('/')
+    console.warn('will create directory', htmlOutputPath)
+    await fs.mkdir(htmlOutputPath, { recursive: true })
+    const htmlOutputFilePath = `${htmlOutputPath}/${fileName}.html`
+    console.warn('will create file', htmlOutputFilePath)
     await fs.writeFile(htmlOutputFilePath, await getHTLMFromMJML(mjmlTemplatePath), 'utf-8')
   }
 }
