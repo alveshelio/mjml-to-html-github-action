@@ -34,6 +34,9 @@ async function main() {
   const inputDir = path.resolve(`./${input}`)
   const outputDir = `./${output}`
 
+  console.warn('inputDir', inputDir)
+  console.warn('outputDir', outputDir)
+
   const filePaths = await findEmailTemplateFiles(inputDir)
 
   const mjmlTemplatePaths = filePaths.filter(
