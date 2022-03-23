@@ -14,7 +14,10 @@ async function getHTLMFromMJML(filePath: string) {
 async function findEmailTemplateFiles(directory: string) {
   let items: Dirent[] = []
   try {
+    console.warn('directory', directory)
     items = await fs.readdir(directory, { withFileTypes: true })
+    console.warn('items', items)
+
     const fileNames = items
       .filter((file) => !file.isDirectory())
       .map((file) => `${directory}/${file.name}`)
@@ -23,6 +26,7 @@ async function findEmailTemplateFiles(directory: string) {
       fileNames.push(...(await findEmailTemplateFiles(`${directory}/${folder.name}`)))
     }
 
+    console.warn('fileNames', fileNames)
     return fileNames
   } catch (e) {
     console.warn('could not find directory', input)
@@ -34,10 +38,8 @@ async function main() {
   const inputDir = path.resolve(`./${input}`)
   const outputDir = `./${output}`
 
-  console.warn('inputDir', inputDir)
-  console.warn('outputDir', outputDir)
-
-  const filePaths = await findEmailTemplateFiles(inputDir)
+  const filePaths = await findEmailTemplateFiles('./')
+  // const filePaths = await findEmailTemplateFiles(inputDir)
 
   const mjmlTemplatePaths = filePaths.filter(
     (filePath) => path.extname(filePath).includes('mjml') && !filePath.includes('partials')
